@@ -1,10 +1,3 @@
-# Azure load balancer module
-resource "azurerm_resource_group" "azlb" {
-  name     = "${var.resource_group_name}"
-  location = "${var.location}"
-  tags     = "${var.tags}"
-}
-
 resource "azurerm_public_ip" "azlb" {
   name                         = "${var.prefix}-publicIP"
   location                     = "${var.location}"
@@ -65,5 +58,4 @@ resource "azurerm_lb_rule" "azlb" {
   backend_address_pool_id        = "${azurerm_lb_backend_address_pool.azlb.id}"
   idle_timeout_in_minutes        = 5
   probe_id                       = "${element(azurerm_lb_probe.azlb.*.id,count.index)}"
-  depends_on                     = ["azurerm_lb_probe.azlb"]
 }
